@@ -1,19 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <title>Parser Generator</title>
     <link rel = "stylesheet" type="text/css" href="../css/style.css" >
-    <script src="../scripts/func.js"></script>
+    <script type='text/javascript' src="../scripts/func.js"></script>
 </head>
 <body>
     <div class="container">
         <div id="description">
 
         </div>
-        <div id="input">
+        <div id="input-form">
+            <text>
 
+            </text>
+            <div class="input-field">
+                <input type="text" maxlength="1" class="nonterminal"/><span>&#8594;</span><input type="text" class="production-rule"/>
+            </div>
+            <button id="add-input-field" onclick="addFields()">
+                +
+            </button>
         </div>
+
         <div id="table">
 
         </div>
