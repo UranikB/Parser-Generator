@@ -17,7 +17,7 @@ function addField(){
     input2.classList.add("production-rule");
     input2.type = "text";
 
-    inputField.innerHTML = "<button class=\"delete-field-button\" onclick=\"deleteField(this)\">&#128465;</button>";
+    inputField.innerHTML = "<button class=\"delete-field-button\" onclick=\"deleteField(this)\"><img src=\"../resources/trash.svg\"/></button>";
     inputField.appendChild(input1);
     inputField.appendChild(arrow);
     inputField.appendChild(input2);
@@ -28,4 +28,10 @@ function addField(){
 function deleteField(button){
     let field = button.parentNode;
     field.parentElement.removeChild(field)
+}
+
+function showTable(){
+    const container = document.getElementById("input-form");
+    let nonTerminalSymbols = ["S"];
+
 }
