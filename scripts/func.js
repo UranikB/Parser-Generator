@@ -30,8 +30,18 @@ function deleteField(button){
     field.parentElement.removeChild(field)
 }
 
+function parseGrammar() {
+    showTable();
+    showAutomaton();
+}
+
 function showTable(){
     const container = document.getElementById("input-form");
     let nonTerminalSymbols = ["S"];
 
+}
+
+function showAutomaton(){
+    const automaton = document.getElementById("automaton");
+    automaton.style.visibility = "visible";
 }

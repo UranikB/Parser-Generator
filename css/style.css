@@ -116,7 +116,7 @@ body {
     width: calc(100% - 125px);
 }
 
-#show-table-button {
+#parse-grammar-button {
     background-color: white;
     width: 74px;
     height: 32px;
@@ -140,4 +140,18 @@ body {
     border-radius: 5px;
     border: none;
     box-shadow: #777 2px 2px 3px;
+}
+
+#automaton {
+    visibility: collapse;
+    min-width: 1200px;
+    margin: 15px;
+}
+
+#area {
+    width: calc(100% - 30px);
+    height: 200px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: #777 3px 3px 3px;
 }
