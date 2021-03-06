@@ -31,7 +31,7 @@ body {
     background-color: steelblue;
 }
 
-#cards {
+#first-row {
     height: 230px;
     display: flex;
     justify-content: space-between;
@@ -49,7 +49,7 @@ body {
 }
 
 .card:hover {
-    transform: scale(1.01);
+    transform: scale(1.02);
 }
 
 .card .title {
@@ -67,6 +67,11 @@ body {
     padding: 5px;
     margin-left: 10px;
     box-sizing: border-box;
+}
+
+#second-row {
+    display: flex;
+    justify-content: space-between;
 }
 
 #input-form{
@@ -143,12 +148,38 @@ body {
     box-shadow: #777 2px 2px 3px;
 }
 
-#automaton {
+#table-container {
+    transition: transform .2s;
+    width: 100%;
+    position: relative;
     visibility: collapse;
     margin: 15px;
 }
 
-#area {
+#table-container:hover {
+    transform: scale(1.01);
+}
+
+
+#table {
+    height: calc(100% - 54px);
+    width: 100%;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: #777 3px 3px 3px;
+}
+
+#automaton-container {
+    transition: transform .2s;
+    visibility: collapse;
+    margin: 15px;
+}
+
+#automaton-container:hover {
+    transform: scale(1.01);
+}
+
+#automaton {
     height: 200px;
     background: #fff;
     border-radius: 15px;

@@ -36,28 +36,39 @@ function parseGrammar() {
 }
 
 function showTable(){
-    const container = document.getElementById("input-form");
-    let nonTerminalInput = container.getElementsByClassName("nonterminal");
-    let nonTerminalSymbols = ["S"];
-    for (let i = 0; i < nonTerminalInput.length; i++) {
-        if (!(nonTerminalInput[i].value in nonTerminalSymbols)) {
-            nonTerminalSymbols.push(nonTerminalInput[i].value);
-        }
-    }
-    const table = document.createElement("table");
-    const thead = document.createElement("thead");
-    const theadRow = document.createElement("tr");
-    let columns = new Array(nonTerminalSymbols.length);
-    for (let i = 0; i < nonTerminalSymbols.length; i++) {
-        columns[i] = document.createElement("th");
-        columns[i].value = nonTerminalSymbols[i];
-        theadRow.append(columns[i]);
-    }
-    thead.append(theadRow);
-    table.append(thead);
+    // const container = document.getElementById("input-form");
+    // let nonTerminalInput = container.getElementsByClassName("nonterminal");
+    // let nonTerminalSymbols = [];
+    // for (let i = 0; i < nonTerminalInput.length; i++) {
+    //     if(!(nonTerminalInput[i].value === "")) {
+    //         if (!nonTerminalSymbols.includes(nonTerminalInput[i].value)) {
+    //             nonTerminalSymbols.push(nonTerminalInput[i].value);
+    //         }
+    //     }
+    // }
+    // let table = document.getElementById("table");
+    // alert("ja");
+    // if(table){
+    //     alert("nein");
+    //     table.parentNode.removeChild(table);
+    // }
+    // alert("oh");
+    // table = document.createElement("table");
+    // const thead = document.createElement("thead");
+    // const theadRow = document.createElement("tr");
+    // for (let i = 0; i < nonTerminalSymbols.length; i++) {
+    //     let headElement = document.createElement("th");
+    //     headElement.innerHTML = nonTerminalSymbols[i];
+    //     theadRow.append(headElement);
+    // }
+    // thead.append(theadRow);
+    // table.append(thead);
+    // document.getElementById("table-container").appendChild(table);
+    const table = document.getElementById("table-container");
+    table.style.visibility = "visible";
 }
 
 function showAutomaton(){
-    const automaton = document.getElementById("automaton");
+    const automaton = document.getElementById("automaton-container");
     automaton.style.visibility = "visible";
 }
