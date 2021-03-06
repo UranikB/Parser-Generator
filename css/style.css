@@ -4,11 +4,14 @@ body {
     margin: 0;
 }
 
+.container {
+    min-width: 1200px;
+}
+
 #menu {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    min-width: 1200px;
     overflow: hidden;
     background: #29333b;
 }
@@ -29,7 +32,6 @@ body {
 }
 
 #cards {
-    min-width: 1200px;
     height: 230px;
     display: flex;
     justify-content: space-between;
@@ -69,7 +71,6 @@ body {
 
 #input-form{
     margin: 15px;
-    min-width: 372px;
     width: calc(33.5% - 30px)
 }
 
@@ -144,12 +145,10 @@ body {
 
 #automaton {
     visibility: collapse;
-    min-width: 1200px;
     margin: 15px;
 }
 
 #area {
-    width: calc(100% - 30px);
     height: 200px;
     background: #fff;
     border-radius: 15px;
