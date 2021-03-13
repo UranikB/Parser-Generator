@@ -1,3 +1,5 @@
+let EMPTY = "-";
+
 function addField(){
     const container = document.getElementById("input-form");
 
@@ -31,8 +33,12 @@ function deleteField(button){
 }
 
 function parseGrammar() {
-    showTable();
-    showAutomaton();
+    //topologicalSorting(getNonTeminalSymbols(),getProductionRules())
+    generateFirsts(getTestTerminalSymbols(), topologicalSorting(getTestNonTerminalSymbols(), getTestProductionRules()), getTestProductionRules());
+    generateFirsts(getTestTerminalSymbols(), getTestNonTerminalSymbols(), getTestProductionRules());
+
+    // showTable();
+    // showAutomaton();
 }
 
 function getNonTerminalSymbols(){
@@ -167,4 +173,199 @@ function showFollowOf(terminalSymbol){
             nonTerminalSymbols.push([nonTerminalInput[i].value][productionRules[i].value]);
         }
     }
+}
+
+
+/*FIRSTS*/
+
+
+
+let firsts = {};
+
+/**
+ *
+ * @param nonTerminalSymbols: Array of all nonterminal-symbols represented by uppercase letters
+ * @param productionRules: Map of nonterminal-symbols (keys) to array of all production rules of this NT (value)
+ * These production rules are stored as strings
+ */
+
+function topologicalSorting(nonTerminalSymbols, productionRules){
+    var dependencies = {};
+    //Initialize dependencies
+    for(let i = 0; i < nonTerminalSymbols.length; i++) {
+        dependencies[nonTerminalSymbols[i]] = [];
+    }
+    //Iterate through NTs
+    for(let i = 0; i < nonTerminalSymbols.length; i++){
+        //Iterate through the according production rules
+        console.log(productionRules[nonTerminalSymbols[i]]);
+        for(let j = 0; j < productionRules[nonTerminalSymbols[i]].length; j++){
+            //Iterate through the characters of the production
+            console.log("   "  + productionRules[nonTerminalSymbols[i]][j]);
+            for(let k = 0; k < productionRules[nonTerminalSymbols[i]][j].length; k++){
+                //Check if production contains NT
+                console.log("       " + productionRules[nonTerminalSymbols[i]][j] + "(" + productionRules[nonTerminalSymbols[i]][j].length + ")" + ": " + productionRules[nonTerminalSymbols[i]][j][k]);
+                if(isNT(productionRules[nonTerminalSymbols[i]][j][k])){
+                    //Add as dependency
+                    if(!(nonTerminalSymbols[i] in dependencies)){
+                        dependencies[nonTerminalSymbols[i]] = [];
+                        dependencies[nonTerminalSymbols[i]].push(productionRules[nonTerminalSymbols[i]][j][k])
+                    } else if(!dependencies[nonTerminalSymbols[i]].includes(productionRules[nonTerminalSymbols[i]][j][k])){
+                        dependencies[nonTerminalSymbols[i]].push(productionRules[nonTerminalSymbols[i]][j][k])
+                    }
+                }
+            }
+        }
+    }
+    console.log(dependencies);
+    let maxDependencies = 0;
+    for(let i = 0; i < nonTerminalSymbols.length; i++) {
+        if(maxDependencies < dependencies[nonTerminalSymbols[i]].length){
+            maxDependencies = dependencies[nonTerminalSymbols[i]].length;
+        }
+    }
+    let sortedNonTerminals = [];
+    for(let i = 0; i <= maxDependencies; i++) {
+        for (let j = 0; j < nonTerminalSymbols.length; j++) {
+            if (dependencies[nonTerminalSymbols[j]].length === i) {
+                sortedNonTerminals.push(nonTerminalSymbols[j]);
+            }
+        }
+    }
+    return sortedNonTerminals;
+}
+
+/**
+ * @param terminalSymbols: Array of all terminal-symbols represented by uppercase letters
+ * @param nonTerminalSymbols: Array of all nonterminal-symbols represented as uppercase letters
+ * @param productionRules: Map of nonterminal-symbols (keys) to array of all production rules of this NT (value)
+ * These production rules are stored as strings
+ */
+function generateFirsts(terminalSymbols, nonTerminalSymbols, productionRules) {
+    initFirsts(terminalSymbols, nonTerminalSymbols);
+    let changed = true;
+    let i = 1;
+    while(changed){
+        console.log(i + ". iteration");
+        changed = false;
+        for(let i = 0; i < nonTerminalSymbols.length; i++){
+            console.log("Next symbol: " + nonTerminalSymbols[i]);
+            if(generateFirstOfNT(nonTerminalSymbols[i], productionRules)){
+                changed = true;
+                console.log(nonTerminalSymbols[i] + ":    Changes detected");
+            } else {
+                console.log(nonTerminalSymbols[i] + ":    No changes detected");
+            }
+        }
+        if(changed) console.log("Another iteration needed because of changes");
+        i++;
+    }
+    console.log("Results after " + i + " iterations:");
+    console.log(firsts);
+}
+
+/**
+ * @param terminalSymbols: Array of all terminal-symbols represented by uppercase letters
+ * @param nonTerminalSymbols: Array of all nonterminal-symbols represented as uppercase letters
+ */
+function initFirsts(terminalSymbols, nonTerminalSymbols){
+    for(let i = 0; i < terminalSymbols.length; i++){
+        firsts[terminalSymbols[i]] = [terminalSymbols[i]];
+    }
+    for(let i = 0; i < nonTerminalSymbols.length; i++){
+        firsts[nonTerminalSymbols[i]] = [];
+    }
+}
+
+/**
+ * @param nonTerminal: nonterminal-symbol represented by uppercase letter
+ * @param productionRules: Map of nonterminal-symbols (keys) to array of all production rules of this NT (value)
+ * These production rules are stored as strings
+ */
+function generateFirstOfNT(nonTerminal, productionRules) {
+    let changed = false;
+    console.log(nonTerminal + ":    Rules: " + productionRules[nonTerminal]);
+    for(let i = 0; i < productionRules[nonTerminal].length; i++){
+        console.log(nonTerminal + ":        Next Rule: " + productionRules[nonTerminal][i]);
+        if(productionRules[nonTerminal][i] === EMPTY){
+            if(append(EMPTY, firsts[nonTerminal])){
+                console.log(nonTerminal + ":            Adding EMPTY");
+                changed = true;
+            } else {
+                console.log(nonTerminal + ":            EMPTY already included");
+            }
+        } else {
+            console.log(nonTerminal + ":        Current First: " + firsts[nonTerminal]);
+            for (let j = 0; j < productionRules[nonTerminal][i].length; j++) {
+                console.log(nonTerminal + ":            Next symbol: " + productionRules[nonTerminal][i][j]);
+                console.log(nonTerminal + ":            First of " + productionRules[nonTerminal][i][j] + ": " + firsts[productionRules[nonTerminal][i][j]]);
+                for (let k = 0; k < firsts[productionRules[nonTerminal][i][j]].length; k++) {
+                    if(!(firsts[productionRules[nonTerminal][i][j]][k] === EMPTY)) {
+                        if (append(firsts[productionRules[nonTerminal][i][j]][k], firsts[nonTerminal])) {
+                            console.log(nonTerminal + ":                Adding: " + firsts[productionRules[nonTerminal][i][j]][k]);
+                            changed = true;
+                        } else {
+                            console.log(nonTerminal + ":                " + firsts[productionRules[nonTerminal][i][j]][k] + " already included");
+                        }
+                    }
+                }
+                if (firsts[productionRules[nonTerminal][i][j]].includes(EMPTY)) {
+                    if ((j + 1) === productionRules[nonTerminal][i].length) {
+                        console.log(nonTerminal + ":                First of last symbol contains EMPTY");
+                        if (append(EMPTY, firsts[nonTerminal])) {
+                            console.log(nonTerminal + ":                    Adding EMPTY");
+                            changed = true;
+                        } else {
+                            console.log(nonTerminal + ":                    EMPTY already included");
+                        }
+                        break;
+                    } else {
+                        console.log(nonTerminal + ":                First of current symbol contains EMPTY");
+                        console.log(nonTerminal + ":                    Continuing with next symbol");
+                    }
+                } else {
+                    console.log(nonTerminal + ":                First of current symbol contains no EMPTY");
+                    console.log(nonTerminal + ":                    Exiting current rule");
+                    break;
+                }
+            }
+        }
+        if(changed) console.log(nonTerminal + ":        Updating First to: " + firsts[nonTerminal]);
+    }
+    return changed;
+}
+
+function getTestNonTerminalSymbols() {
+    return ['A', 'B', 'C', 'D'];
+}
+
+function getTestTerminalSymbols() {
+    return ['a', 'b', 'c', 'd', '-'];
+}
+
+function getTestProductionRules() {
+    return {A : ['BCD', 'CD', 'D', 'a'], B: ['CD', 'D' , 'b' , '-'], C: ['D', 'c', '-'], D: ['d', '-']};
+}
+
+/**
+ * Checks whether str is nonterminal
+ * @param str: to be checked
+ * @returns boolean
+ */
+function isNT(str) {
+    return str.length === 1 && !!str.match(/[A-Z]/);
+}
+
+/**
+ * Checks whether str is included and appends it if not
+ * @param str: to add
+ * @param array: to be added to
+ * @returns boolean
+ */
+function append(str, array) {
+    if(!(array.includes(str))){
+        array.push(str);
+        return true;
+    }
+    return false;
 }

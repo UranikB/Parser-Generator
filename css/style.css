@@ -1,6 +1,6 @@
 body {
     background-color: lightsteelblue;
-    font-family: "Helvetica Neue";
+    font-family: "Helvetica Neue", serif;
     margin: 0;
 }
 
@@ -76,7 +76,7 @@ body {
 
 #input-form{
     margin: 15px;
-    width: calc(33.5% - 30px)
+    width: calc(50.5% - 30px)
 }
 
 #input-form > * {
