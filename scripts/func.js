@@ -34,97 +34,82 @@ function deleteField(button){
 
 function parseGrammar() {
     //topologicalSorting(getNonTeminalSymbols(),getProductionRules())
-    generateFirsts(getTestTerminalSymbols(), topologicalSorting(getTestNonTerminalSymbols(), getTestProductionRules()), getTestProductionRules());
-    generateFirsts(getTestTerminalSymbols(), getTestNonTerminalSymbols(), getTestProductionRules());
 
-    // showTable();
+    initializeValuesForTesting();
+
+    let input = getInput();
+
+    let terminals = input[0];
+    console.log("Terminals: " + terminals);
+    let nts = input[1];
+    console.log("NTS: " + nts);
+    console.log("Production Rules:")
+    let productionRules = input[2];
+    console.log(productionRules);
+
+    //generateFirsts(getTerminalSymbols(), topologicalSorting(getNonTerminalSymbols(), getProductionRules()), getProductionRules());
+    generateFirsts(terminals, nts, productionRules);
+    generateFollow(terminals, nts, productionRules);
+
+    //getProductionRules();
+
+    showTable();
     // showAutomaton();
 }
 
-function getNonTerminalSymbols(){
+function initializeValuesForTesting(){
+    const container = document.getElementById("input-form");
+    let productionRules = getOtherTestProductionRules();
+    let counter = 0;
+    for (let i = 0; i < Object.keys(productionRules).length - 1; i++) {
+        for (let j = 0; j < productionRules[Object.keys(productionRules)[i]].length; j++) {
+            addField();
+        }
+    }
+    for (let i = 0; i < Object.keys(productionRules).length; i++) {
+        for (let j = 0; j < productionRules[Object.keys(productionRules)[i]].length; j++) {
+            container.getElementsByClassName("nonterminal")[counter].value = Object.keys(productionRules)[i];
+            container.getElementsByClassName("production-rule")[counter].value = productionRules[Object.keys(productionRules)[i]][j];
+            counter++;
+        }
+    }
+}
+
+/**
+ * @returns all production rules of every NTS as an object array. The keys are the NTS.
+ */
+function getInput() {
     const container = document.getElementById("input-form");
     let nonTerminalInput = container.getElementsByClassName("nonterminal");
-    let nonTerminalSymbols = [];
+    let productionRulesInput = container.getElementsByClassName("production-rule");
+
+    let productionRules = {};
+    let terminals = [];
+    let nonTerminals = ['X'];
+
     for (let i = 0; i < nonTerminalInput.length; i++) {
-        if (!(nonTerminalSymbols.includes(nonTerminalInput[i].value))
-        && (nonTerminalInput[i].value === (nonTerminalInput[i].value).toUpperCase())) {
-            nonTerminalSymbols.push(nonTerminalInput[i].value);
+        if(!(nonTerminalInput[i].value in productionRules)){
+            productionRules[nonTerminalInput[i].value] = [];
+        }
+        productionRules[nonTerminalInput[i].value].push(productionRulesInput[i].value.replace(/\s+/g, ''));
+        for (let j = 0; j < productionRulesInput[i].value.length; j++) {
+            if(!(productionRulesInput[i].value[j] === " ")){
+                if(isNT(productionRulesInput[i].value[j])){
+                    append(productionRulesInput[i].value[j], nonTerminals);
+                }
+                else{
+                    append(productionRulesInput[i].value[j], terminals);
+                }
+            }
+
         }
     }
-    return nonTerminalSymbols;
-}
-
-function getNonTerminalSymbolsWithDoubles(){
-    const container = document.getElementById("input-form");
-    let nonTerminalInput = container.getElementsByClassName("nonterminal");
-    let nonTerminalSymbols = [];
-    for (let i = 0; i < nonTerminalInput.length; i++) {
-        if (nonTerminalInput[i].value === (nonTerminalInput[i].value).toUpperCase()) {
-            nonTerminalSymbols.push(nonTerminalInput[i].value);
-        }
-    }
-    return nonTerminalSymbols;
-}
-
-function getAllProductionRules(){
-    const container = document.getElementById("input-form");
-    let productionInput = container.getElementsByClassName("production-rule");
-    let productionRules = [];
-    for (let i = 0; i < productionInput.length; i++) {
-        productionRules.push(productionInput[i].value);
-    }
-    return productionRules;
-}
-
-function getProductionRulesOf(nonTerminalSymbol){
-    if(nonTerminalSymbol === "S\'"){
-        return 'S';
-    }
-    let nonTerminalSymbols = getNonTerminalSymbolsWithDoubles();
-    let nonTerminalString = "S\'";
-    let allProductionRules = getAllProductionRules();
-    let productionRules = [];
-    for (let i = 1; i < nonTerminalSymbols.length; i++) {
-        nonTerminalString += nonTerminalSymbols[i];
-    }
-    for (let i = 2; i < nonTerminalString.length; i++) {
-        if (nonTerminalString[i] === nonTerminalSymbol) {
-            productionRules.push(allProductionRules[i - 1]); //Because "S'" needs two slots
-        }
-    }
-    return productionRules;
-}
-
-function getTerminalSymbols(){
-    let allProductionRules = getAllProductionRules();
-    let terminalAsString = "";
-    let terminalSymbols = [];
-    for (let i = 0; i < allProductionRules.length; i++) {
-        terminalAsString += allProductionRules[i];
-    }
-    for (let i = 0; i < terminalAsString.length; i++) {
-        if ((!terminalSymbols.includes(terminalAsString[i]))
-        && (terminalAsString[i] === terminalAsString.toLowerCase()[i])){
-            terminalSymbols.push(terminalAsString[i]);
-        }
-    }
-    return terminalSymbols;
-}
-
-function getProductionRules() {
-    let nonTerminalSymbols = getNonTerminalSymbols();
-
-    let productionRulesTable = [];
-    let productionRulesOfNonTerminal = [];
-
-    for (let i = 0; i < nonTerminalSymbols.length; i++) {
-        productionRulesOfNonTerminal = getProductionRulesOf(nonTerminalSymbols[i]);
-        productionRulesTable[i] = nonTerminalSymbols[i].toString() + ": " + productionRulesOfNonTerminal.toString() + "\; ";
-    }
-    return productionRulesTable;
+    return [terminals, nonTerminals, productionRules];
 }
 
 function showTable(){
+    let input = getInput();
+    let nonTerminalSymbols = input[1];
     const table = document.createElement("table");
     const thead = document.createElement("thead");
     const theadRow = document.createElement("tr");
@@ -146,32 +131,108 @@ function showAutomaton(){
     automaton.style.visibility = "visible";
 }
 
-function showFollowOf(terminalSymbol){
-    const container = document.getElementById("input-form");
-    let nonTerminalInput = container.getElementsByClassName("nonterminal");
-    let productionRules = container.getElementsByClassName("production-rule");
+/* FOLLOW */
 
-    let follow = [];
-    let memory = [];
+let follow = {};
 
-    for (let i = 0; i < nonTerminalInput; i++) {
-        if(nonTerminalInput[i].value.toString() === terminalSymbol.toString()){
+/**
+ * This function generates the follow sets of all given symbols. It has to be called after first is calculated.
+ */
+function generateFollow(terminals, nonTerminals, productionRules){
+    initFollow(nonTerminals, terminals);
+    let changed = true;
+    let counter = 0;
+    console.log("terminals");
+    console.log(terminals);
+    console.log("nonterminals");
+    console.log(nonTerminals);
+    console.log("production rules");
+    console.log(productionRules);
 
+    while(changed){
+        changed = false;
+        console.log("Going through all production rules");
+        for (let i = 0; i < nonTerminals.length; i++) {
+            console.log("   Going through production rules " + productionRules[nonTerminals[i]] + " of " + nonTerminals[i]);
+            if(nonTerminals[i] === 'X'){
+                console.log("   Start Symbol. Follow is $")
+                if(append("$", follow[nonTerminals[i]])){
+                    changed = true;
+                    continue;
+                }
+            }
+            for (let j = 0; j < productionRules[nonTerminals[i]].length; j++) {
+                console.log("       Going through production rule " + productionRules[nonTerminals[i]][j] + " of " + nonTerminals[i]);
+                if(productionRules[nonTerminals[i]][j].length === 0){
+                    console.log("           Rule invalid");
+                }
+                else {
+                    for (let k = 0; k < productionRules[nonTerminals[i]][j].length - 1; k++) {
+                        console.log("               Checking " + productionRules[nonTerminals[i]][j][k]);
+                        let first = firsts[productionRules[nonTerminals[i]][j][k+1]];
+                        console.log(productionRules[nonTerminals[i]][j][k] +"                   First of next symbol: " + first);
+                        for (let l = 0; l < first.length; l++) {
+                            if(append(first[l], follow[productionRules[nonTerminals[i]][j][k]])){
+                                changed = true;
+                                console.log(productionRules[nonTerminals[i]][j][k] + "                       Changed was set to true because of first of next");
+                                console.log(productionRules[nonTerminals[i]][j][k] + "                       " + first[l] + " added to follow of "); console.log(follow[productionRules[nonTerminals[i]][j][k]]);
+                            }
+                        }
+                        if(first.includes(EMPTY)){
+                            console.log(productionRules[nonTerminals[i]][j][k] + "                       It contains empty symbol");
+                            for (let l = 0; l < follow[productionRules[nonTerminals[i]][j][k+1]].length; l++) {
+                                if(append(follow[productionRules[nonTerminals[i]][j][k+1]][l], follow[productionRules[nonTerminals[i]][j][k]])){
+                                    changed = true;
+                                    console.log(productionRules[nonTerminals[i]][j][k] + "                       Changed was set to true because of follow of next");
+                                    console.log(productionRules[nonTerminals[i]][j][k] + "                       " + follow[productionRules[nonTerminals[i]][j][k+1]][l] + " added to follow of "); console.log(follow[productionRules[nonTerminals[i]][j][k]]);
+                                }
+                            }
+
+                        }
+                    }
+                }
+                console.log("           Checking last element " + productionRules[nonTerminals[i]][j][productionRules[nonTerminals[i]][j].length - 1]);
+                for (let k = 0; k < follow[nonTerminals[i]].length; k++) {
+                    console.log("           follow of non terminal" + nonTerminals[i] + "to be added: " + follow[nonTerminals[i]][k]);
+                    if(append(follow[nonTerminals[i]][k], follow[productionRules[nonTerminals[i]][j][productionRules[nonTerminals[i]][j].length - 1]])){
+                        changed = true;
+                        console.log("               Changed was set to true");
+                    }
+                }
+
+            }
         }
+        console.log(counter + "iteration complete. Follow: ");
+        console.log(follow);
+        counter++;
+    }
+    console.log("follow was generated");
+
+    console.log("Empty Symbols get removed.");
+
+    for (let i = 0; i < Object.keys(follow).length; i++) {
+        console.log("   filtering rule " + follow[Object.keys(follow)[i]] + " of " + Object.keys(follow));
+        if(Object.keys(follow)[i] === EMPTY){
+            delete follow[Object.keys(follow)[i]];
+        }
+        let followSet = follow[Object.keys(follow)[i]]
+        for (let j = 0; j < followSet.length; j++) {
+            if(followSet[j] === EMPTY){
+                followSet.splice(j, 1);
+            }
+        }
+        console.log("         result of filter: " + follow[Object.keys(follow)[i]]);
     }
 
-    let nonTerminalSymbols = [];
-    for (let i = 0; i < nonTerminalInput.length; i++) {
-        if (!(nonTerminalInput[i].value in nonTerminalSymbols)) {
-            let firstProductionSymbol = Array.from(productionRules[i].value)[0]
-            if(firstProductionSymbol.match(/[a-zäöüß]$/)){                        // -> Terminal Symbol
-                nonTerminalSymbols.push([nonTerminalInput[i].value][firstProductionSymbol]);
-            }
-            else if (firstProductionSymbol.match(/[A-ZÄÖÜ]$/)){                   // -> non Terminal Symbol
+    console.log(follow);
+}
 
-            }
-            nonTerminalSymbols.push([nonTerminalInput[i].value][productionRules[i].value]);
-        }
+function initFollow(nonTerminalSymbols, terminalSymbols){
+    for(let i = 0; i < terminalSymbols.length; i++){
+        follow[terminalSymbols[i]] = [];
+    }
+    for(let i = 0; i < nonTerminalSymbols.length; i++){
+        follow[nonTerminalSymbols[i]] = [];
     }
 }
 
@@ -243,6 +304,10 @@ function topologicalSorting(nonTerminalSymbols, productionRules){
  */
 function generateFirsts(terminalSymbols, nonTerminalSymbols, productionRules) {
     initFirsts(terminalSymbols, nonTerminalSymbols);
+    console.log("nts: " + nonTerminalSymbols);
+    console.log("ts: " + terminalSymbols);
+    console.log("pr: ");
+    console.log(productionRules);
     let changed = true;
     let i = 1;
     while(changed){
@@ -336,7 +401,7 @@ function generateFirstOfNT(nonTerminal, productionRules) {
 }
 
 function getTestNonTerminalSymbols() {
-    return ['A', 'B', 'C', 'D'];
+    return ['X', 'S', 'A', 'B', 'C', 'D'];
 }
 
 function getTestTerminalSymbols() {
@@ -345,6 +410,10 @@ function getTestTerminalSymbols() {
 
 function getTestProductionRules() {
     return {A : ['BCD', 'CD', 'D', 'a'], B: ['CD', 'D' , 'b' , '-'], C: ['D', 'c', '-'], D: ['d', '-']};
+}
+
+function getOtherTestProductionRules() {
+    return {"X": ['S'], S: ['ABCDEF', 'ABC'], A : ['BC', 'aB'], B: ['C', 'b'], C: ['c', '-'], D: ['d'], E: ['e', '-'], F: ['f']};
 }
 
 /**
