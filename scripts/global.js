@@ -1,8 +1,8 @@
 /* Options: ALL = All; OBJECTS = Objects; NONE = None */
-let logging = "NONE";
+let logging = "ALL";
 
 
-let EMPTY = "-";
+let EMPTY = "e";
 let STARTSYMBOL = "X";
 
 
