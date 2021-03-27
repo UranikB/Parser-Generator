@@ -30,3 +30,10 @@ function deleteField(button){
     field.parentElement.removeChild(field)
 }
 
+function showFirst(){
+    document.getElementById("first-container").style.visibility = "visible";
+}
+
+function showFollow(){
+    document.getElementById("follow-container").style.visibility = "visible";
+}

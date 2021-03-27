@@ -17,6 +17,9 @@ function parseGrammar() {
     console.time("Follow");
     generateFollow(terminals, nts, productionRules);
     console.timeEnd("Follow");
+
+    showFirst();
+    showFollow();
 }
 
 function getInput() {
