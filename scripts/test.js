@@ -1,6 +1,5 @@
-function initializeValuesForTesting(){
+function fillInput(productionRules){
     const container = document.getElementById("input-form");
-    let productionRules = getMathGrammar();
     let counter = 0;
     for (let i = 0; i < Object.keys(productionRules).length; i++) {
         for (let j = 0; j < productionRules[Object.keys(productionRules)[i]].length; j++) {

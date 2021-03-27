@@ -1,7 +1,4 @@
 function parseGrammar() {
-
-    initializeValuesForTesting();
-
     let input = getInput();
     terminals = input[0].sort();
     log("Terminals: " + terminals);
