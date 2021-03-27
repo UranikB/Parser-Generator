@@ -171,7 +171,8 @@ body {
 }
 
 .symbol-text{
-    width: 15px;
+    font-family: monospace;
+    font-size: 17px;
 }
 
 #first-form{
