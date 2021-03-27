@@ -76,7 +76,7 @@ body {
 
 #input-form{
     margin: 15px;
-    width: calc(50.5% - 30px)
+    width: calc(33.5% - 30px)
 }
 
 #input-form > * {
@@ -148,10 +148,21 @@ body {
     box-shadow: #777 2px 2px 3px;
 }
 
+#first-container{
+    margin: 15px;
+    width: calc(33.5% - 30px);
+    visibility: collapse;
+}
+
+#follow-container{
+    margin: 15px;
+    width: calc(33.5% - 30px);
+    visibility: collapse;
+}
+
+
 #table-container {
     transition: transform .2s;
-    width: 100%;
-    position: relative;
     visibility: collapse;
     margin: 15px;
 }
@@ -160,26 +171,7 @@ body {
     transform: scale(1.01);
 }
 
-
 #table {
-    height: calc(100% - 54px);
-    width: 100%;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: #777 3px 3px 3px;
-}
-
-#automaton-container {
-    transition: transform .2s;
-    visibility: collapse;
-    margin: 15px;
-}
-
-#automaton-container:hover {
-    transform: scale(1.01);
-}
-
-#automaton {
     height: 200px;
     background: #fff;
     border-radius: 15px;
