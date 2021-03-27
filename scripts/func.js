@@ -17,7 +17,7 @@ function addField(){
     input2.classList.add("production-rule");
     input2.type = "text";
 
-    inputField.innerHTML = "<button class=\"delete-field-button\" onclick=\"deleteField(this)\"><img src=\"../resources/trash.svg\"/></button>";
+    inputField.innerHTML = "<button class=\"button\" onclick=\"deleteField(this)\"><img src=\"../resources/trash.svg\"/></button>";
     inputField.appendChild(input1);
     inputField.appendChild(arrow);
     inputField.appendChild(input2);
@@ -31,9 +31,45 @@ function deleteField(button){
 }
 
 function showFirst(){
+    const container = document.getElementById("first-form");
+    container.innerHTML = "";
+
+    for (let i = 0; i < nonTerminals.length; i++) {
+        if(nonTerminals[i] !== STARTSYMBOL) {
+            const firstField = document.createElement("div");
+            firstField.classList.add("first-field");
+
+            firstField.innerHTML = "<text class=\"symbol-text\">" + nonTerminals[i] + "</text" +
+                "><input type=\"text\" class=\"first-input\"" +
+                "/><button class=\"button\" onclick=\"\">C</button" +
+                "><input disabled type=\"text\" class=\"first-output\"/>";
+
+            container.appendChild(firstField);
+        }
+    }
     document.getElementById("first-container").style.visibility = "visible";
 }
 
 function showFollow(){
+    const container = document.getElementById("follow-form");
+    container.innerHTML = "";
+
+    let symbols = nonTerminals.concat(terminals);
+
+    for (let i = 0; i < symbols.length; i++) {
+        if(symbols[i] !== "-" && symbols[i] !== STARTSYMBOL) {
+            const followField = document.createElement("div");
+            followField.classList.add("follow-field");
+
+            followField.innerHTML = "<text class=\"symbol-text\">" + symbols[i] + "</text" +
+                "><input type=\"text\" class=\"follow-input\"" +
+                "/><button class=\"button\" onclick=\"\">C</button" +
+                "><input disabled type=\"text\" class=\"follow-output\"/>";
+
+            container.appendChild(followField);
+        }
+    }
     document.getElementById("follow-container").style.visibility = "visible";
+
+
 }

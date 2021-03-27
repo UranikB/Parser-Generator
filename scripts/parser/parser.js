@@ -3,19 +3,19 @@ function parseGrammar() {
     initializeValuesForTesting();
 
     let input = getInput();
-    let terminals = input[0];
+    terminals = input[0].sort();
     log("Terminals: " + terminals);
-    let nts = input[1];
-    log("NTS: " + nts);
+    nonTerminals = input[1].sort();
+    log("NTS: " + nonTerminals);
     log("Production Rules:");
-    let productionRules = input[2];
+    productionRules = input[2];
     log(productionRules);
 
     console.time("First");
-    generateFirsts(terminals, topologicalSorting(nts, productionRules), productionRules);
+    generateFirsts(terminals, topologicalSorting(nonTerminals, productionRules), productionRules);
     console.timeEnd("First");
     console.time("Follow");
-    generateFollow(terminals, nts, productionRules);
+    generateFollow(terminals, nonTerminals, productionRules);
     console.timeEnd("Follow");
 
     showFirst();

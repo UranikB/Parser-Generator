@@ -57,23 +57,23 @@
         <div id="input-form">
             <div class="title">
                 <h3>Eingabe</h3>
-                <button id="parse-grammar-button" onclick="parseGrammar()">
+                <button class="wide-button" id="parse-grammar-button" onclick="parseGrammar()">
                     <img src="../resources/caret-right-fill.svg"/>
                 </button>
             </div>
             <div id="disabled-start-field" class="input-field">
-                <button class="delete-field-button"></button
+                <button class="button"></button
                 ><input disabled type="text" maxlength="1" class="nonterminal" value="X"
                 /><span>&#8594;</span
             ><input disabled type="text" class="production-rule" value="S"/>
             </div>
             <div class="input-field">
-                <button class="delete-field-button" onclick="deleteField(this)"
+                <button class="button" onclick="deleteField(this)"
                 ><img src="../resources/trash.svg"
                 /></button><input type="text" maxlength="1" class="nonterminal"
             /><span>&#8594;</span><input type="text" class="production-rule"/>
             </div>
-            <button id="add-field-button" onclick="addField()">
+            <button class="wide-button" id="add-field-button" onclick="addField()">
                 +
             </button>
         </div>
@@ -81,14 +81,21 @@
         <div id="first-container">
             <div class="title">
                 <h3>First</h3>
+                <button class="wide-button" onclick="">
+                    <img src="../resources/caret-right-fill.svg"/>
+                </button>
             </div>
-
+            <div id="first-form"></div>
         </div>
 
         <div id="follow-container">
             <div class="title">
                 <h3>Follow</h3>
+                <button class="wide-button" onclick="">
+                    <img src="../resources/caret-right-fill.svg"/>
+                </button>
             </div>
+            <div id="follow-form"></div>
         </div>
     </div>
 

@@ -6,6 +6,9 @@ let EMPTY = "-";
 let STARTSYMBOL = "X";
 
 
-let first = {};
+let terminals = [];
+let nonTerminals = [];
+let productionRules = {};
 
+let first = {};
 let follow = {};

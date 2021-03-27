@@ -122,26 +122,18 @@ body {
     width: calc(100% - 125px);
 }
 
-#parse-grammar-button {
+.wide-button {
     background-color: white;
     width: 74px;
-    height: 32px;
-    border-radius: 5px;
-    border: none;
-    box-shadow: #777 2px 2px 3px;
-}
-.delete-field-button {
-    background-color: white;
-    width: 32px;
     height: 32px;
     border-radius: 5px;
     border: none;
     box-shadow: #777 2px 2px 3px;
 }
 
-#add-field-button {
+.button {
     background-color: white;
-    width: 74px;
+    width: 32px;
     height: 32px;
     border-radius: 5px;
     border: none;
@@ -176,4 +168,60 @@ body {
     background: #fff;
     border-radius: 15px;
     box-shadow: #777 3px 3px 3px;
+}
+
+.symbol-text{
+    width: 15px;
+}
+
+#first-form{
+    margin: 15px;
+}
+
+#first-form > * {
+    display: block;
+    margin-top: 15px;
+}
+
+.first-field > *:first-child {
+    margin-left: 0;
+}
+
+.first-field > * {
+    margin-left: 10px;
+}
+
+.first-field > input {
+    width: calc(50% - 40px);
+    font-size: 15px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: #777 2px 2px 3px;
+}
+
+#follow-form{
+    margin: 15px;
+}
+
+#follow-form > * {
+    display: block;
+    margin-top: 15px;
+}
+
+.follow-field > *:first-child {
+    margin-left: 0;
+}
+
+.follow-field > * {
+    margin-left: 10px;
+}
+
+.follow-field > input {
+    width: calc(50% - 40px);
+    font-size: 15px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: #777 2px 2px 3px;
 }
