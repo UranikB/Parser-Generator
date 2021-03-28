@@ -18,9 +18,11 @@ function fillInput(productionRules){
 // }
 
 function getTestProductionRules() {
+    EMPTY = '-';
     return {X: ['S'], S: ['ABCDEF | ABC | a'], A : ['BC', 'aB'], B: ['C', 'b'], C: ['c | | c'], D: ['d'], E: ['e', '-'], F: ['f']}
 }
 
 function getMathGrammar(){
+    EMPTY = 'e';
     return{X: ['S'], S: ['S+S', 'S-S', 'P'], P: ['P*P', 'B*P', 'P*B', 'B*B', 'E'], B: ['(S)', 'a'], E: ['B^B']}
 }

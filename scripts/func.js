@@ -37,12 +37,13 @@ function showFirst(){
     for (let i = 0; i < nonTerminals.length; i++) {
         if(nonTerminals[i] !== STARTSYMBOL) {
             const firstField = document.createElement("div");
+            firstField.id = "first-filed-of-" + nonTerminals[i];
             firstField.classList.add("first-field");
 
             firstField.innerHTML = "<text class=\"symbol-text\">" + nonTerminals[i] + "</text" +
-                "><input type=\"text\" class=\"first-input\"" +
-                "/><button class=\"button\" onclick=\"\">C</button" +
-                "><input disabled type=\"text\" class=\"first-output\"/>";
+                "><input type=\"text\" id=\"first-input-of-" + nonTerminals[i] + "\" class=\"first-input\"" +
+                "/><button class=\"button\" onclick=\"correctFirst(\'" + nonTerminals[i] + "\')\">C</button" +
+                "><input disabled type=\"text\" id=\"first-output-of-" + nonTerminals[i] + "\" class=\"first-output\"/>";
 
             container.appendChild(firstField);
         }
@@ -57,19 +58,104 @@ function showFollow(){
     let symbols = nonTerminals.concat(terminals);
 
     for (let i = 0; i < symbols.length; i++) {
-        if(symbols[i] !== "-" && symbols[i] !== STARTSYMBOL) {
+        if(symbols[i] !== EMPTY && symbols[i] !== STARTSYMBOL) {
             const followField = document.createElement("div");
             followField.classList.add("follow-field");
+            followField.id = "follow-field-of-" + symbols[i];
 
             followField.innerHTML = "<text class=\"symbol-text\">" + symbols[i] + "</text" +
-                "><input type=\"text\" class=\"follow-input\"" +
-                "/><button class=\"button\" onclick=\"\">C</button" +
-                "><input disabled type=\"text\" class=\"follow-output\"/>";
+                "><input type=\"text\" id=\"follow-input-of-" + symbols[i] + "\" class=\"follow-input\"" +
+                "/><button class=\"button\" onclick=\"correctFollow(\'" + symbols[i] + "\')\">C</button" +
+                "><input disabled type=\"text\" id=\"follow-output-of-" + symbols[i] + "\" class=\"follow-output\"/>";
 
             container.appendChild(followField);
         }
     }
     document.getElementById("follow-container").style.visibility = "visible";
+}
 
 
+function correctAllFirsts(){
+    let nonTerminalSymbols = getInput()[1];
+    for (let i = 0; i < nonTerminalSymbols.length; i++) {
+        if(nonTerminalSymbols[i] !== STARTSYMBOL && nonTerminalSymbols[i] !== EMPTY){
+            correctFirst(nonTerminalSymbols[i]);
+        }
+
+    }
+}
+
+function correctFirst(nonTerminalSymbol){
+    let input = document.getElementById("first-input-of-" + nonTerminalSymbol);
+    let output = document.getElementById("first-output-of-" + nonTerminalSymbol);
+
+    let result = "";
+    result += first[nonTerminalSymbol][0];
+    for (let i = 1; i < first[nonTerminalSymbol].length; i++) {
+        result += ", " + first[nonTerminalSymbol][i];
+    }
+    output.value = result;
+
+    let inputArray = [];
+    for (let i = 0; i < input.value.length; i++) {
+        if(input.value[i] !== "{"
+            && input.value[i] !== "}"
+            && input.value[i] !== ","
+            && input.value[i] !== ";"
+            && input.value[i] !== " "){
+            inputArray.push(input.value[i]);
+        }
+    }
+
+    if(compareArrays(inputArray, first[nonTerminalSymbol])){
+        output.style.color = "green";
+    }
+    else{
+        output.style.color = "red";
+    }
+
+}
+
+function correctAllFollows(){
+    let input = getInput();
+    for (let i = 0; i < input[1].length; i++) {
+        if(input[1][i] !== STARTSYMBOL && input[1][i] !== EMPTY){
+            correctFollow(input[1][i]);
+        }
+    }
+    for (let i = 0; i < input[0].length; i++) {
+        if(input[0][i] !== STARTSYMBOL && input[0][i] !== EMPTY){
+            correctFollow(input[0][i]);
+        }
+    }
+}
+
+function correctFollow(symbol){
+    let input = document.getElementById("follow-input-of-" + symbol);
+    let output = document.getElementById("follow-output-of-" + symbol);
+
+    let result = "";
+    result += follow[symbol][0];
+    for (let i = 1; i < follow[symbol].length; i++) {
+        result += ", " + follow[symbol][i];
+    }
+    output.value = result;
+
+    let inputArray = [];
+    for (let i = 0; i < input.value.length; i++) {
+        if(input.value[i] !== "{"
+            && input.value[i] !== "}"
+            && input.value[i] !== ","
+            && input.value[i] !== ";"
+            && input.value[i] !== " "){
+            inputArray.push(input.value[i]);
+        }
+    }
+
+    if(compareArrays(inputArray, follow[symbol])){
+        output.style.color = "green";
+    }
+    else{
+        output.style.color = "red";
+    }
 }

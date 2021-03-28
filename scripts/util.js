@@ -27,3 +27,28 @@ function log(string) {
         if(typeof string !== 'string') console.log(string);
     }
 }
+
+/**
+ * Checks whether two arrays include each other. Only works, if every entry appears only once.
+ * @param firstArray
+ * @param secondArray
+ * @return {boolean}
+ */
+function compareArrays(firstArray, secondArray){
+    let equal = true;
+    for (let i = 0; i < firstArray.length; i++) {
+        if(!secondArray.includes(firstArray[i])){
+            equal = false;
+            break;
+        }
+    }
+    if(equal){
+        for (let i = 0; i < secondArray.length; i++) {
+            if(!firstArray.includes(secondArray[i])){
+                equal = false;
+                break;
+            }
+        }
+    }
+    return equal;
+}

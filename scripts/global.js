@@ -2,7 +2,7 @@
 let logging = "ALL";
 
 
-let EMPTY = "e";
+let EMPTY = "-";
 let STARTSYMBOL = "X";
 
 
