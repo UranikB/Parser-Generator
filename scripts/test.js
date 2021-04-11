@@ -1,4 +1,9 @@
 function fillInput(productionRules){
+    let fields = document.getElementsByClassName("input-field");
+    for (let i = productionRules.length - 1 ; i <= fields.length; i++){
+        document.getElementById("input-form").removeChild(fields[i]);
+    }
+
     const container = document.getElementById("input-form");
     let counter = 0;
     for (let i = 0; i < Object.keys(productionRules).length; i++) {
