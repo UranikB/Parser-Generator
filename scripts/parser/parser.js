@@ -8,16 +8,20 @@ function parseGrammar() {
     productionRules = input[2];
     log(productionRules);
 
-    console.time("First");
-    generateFirsts(terminals, topologicalSorting(nonTerminals, productionRules), productionRules);
-    console.timeEnd("First");
-    console.time("Follow");
-    generateFollow(terminals, nonTerminals, productionRules);
-    console.timeEnd("Follow");
-
-    showFirst();
-    showFollow();
+    try {
+        console.time("First");
+        generateFirsts(terminals, topologicalSorting(nonTerminals, productionRules), productionRules);
+        console.timeEnd("First");
+        console.time("Follow");
+        generateFollow(terminals, nonTerminals, productionRules);
+        console.timeEnd("Follow");
+        showFirst();
+        showFollow();
+    } catch (e) {
+        document.getElementById("parse-grammar-button").style.backgroundColor = "red";
+    }
 }
+
 
 function getInput() {
     const container = document.getElementById("input-form");
