@@ -19,7 +19,7 @@ function addField(){
     input2.type = "text";
     input2.onchange =  hideAll;
 
-    inputField.innerHTML = "<button class=\"button\" onclick=\"deleteField(this)\"><img src=\"../resources/trash.svg\"/></button>";
+    inputField.innerHTML = "<button class=\"button\" onclick=\"deleteField(this)\"><img src=\"../resources/trashcan.png\"/></button>";
     inputField.appendChild(input1);
     inputField.appendChild(arrow);
     inputField.appendChild(input2);
@@ -47,7 +47,7 @@ function showFirst(){
 
             firstField.innerHTML = "<text class=\"symbol-text\">" + nonTerminals[i] + "</text" +
                 "><input type=\"text\" id=\"first-input-of-" + nonTerminals[i] + "\" class=\"first-input\"" +
-                "/><button class=\"button\" onclick=\"correctFirst(\'" + nonTerminals[i] + "\')\">C</button" +
+                "/><button class=\"button\" onclick=\"correctFirst(\'" + nonTerminals[i] + "\')\">&check;</button" +
                 "><input disabled type=\"text\" id=\"first-output-of-" + nonTerminals[i] + "\" class=\"first-output\"/>";
 
             container.appendChild(firstField);
@@ -70,7 +70,7 @@ function showFollow(){
 
             followField.innerHTML = "<text class=\"symbol-text\">" + symbols[i] + "</text" +
                 "><input type=\"text\" id=\"follow-input-of-" + symbols[i] + "\" class=\"follow-input\"" +
-                "/><button class=\"button\" onclick=\"correctFollow(\'" + symbols[i] + "\')\">C</button" +
+                "/><button class=\"button\" onclick=\"correctFollow(\'" + symbols[i] + "\')\">&check;</button" +
                 "><input disabled type=\"text\" id=\"follow-output-of-" + symbols[i] + "\" class=\"follow-output\"/>";
 
             container.appendChild(followField);
@@ -107,7 +107,7 @@ function resetAll(){
         "               </div>\n" +
         "               <div class=\"input-field\">\n" +
         "                   <button class=\"button\" onclick=\"deleteField(this)\"\n" +
-        "                   ><img src=\"../resources/trash.svg\"\n" +
+        "                   ><img src=\"../resources/trashcan.png\"\n" +
         "                   /></button><input type=\"text\" maxlength=\"1\" class=\"nonterminal\"\n" +
         "                   /><span>&#8594;</span><input type=\"text\" class=\"production-rule\"/>\n" +
         "               </div>\n" +
