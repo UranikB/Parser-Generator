@@ -8,6 +8,7 @@ function addField(){
     input1.classList.add("nonterminal");
     input1.maxLength = 1;
     input1.type = "text";
+    input1.onchange =  hideAll;
 
     const arrow = document.createElement("span");
     arrow.innerHTML = "&#8594;";
@@ -16,6 +17,7 @@ function addField(){
     const input2 = document.createElement("input");
     input2.classList.add("production-rule");
     input2.type = "text";
+    input2.onchange =  hideAll;
 
     inputField.innerHTML = "<button class=\"button\" onclick=\"deleteField(this)\"><img src=\"../resources/trash.svg\"/></button>";
     inputField.appendChild(input1);
@@ -27,7 +29,10 @@ function addField(){
 
 function deleteField(button){
     let field = button.parentNode;
-    field.parentElement.removeChild(field)
+    if(field.children.item(1).value !== "" || field.children.item(3).value !== ""){
+        hideAll();
+    }
+    field.parentElement.removeChild(field);
 }
 
 function showFirst(){
@@ -72,6 +77,41 @@ function showFollow(){
         }
     }
     document.getElementById("follow-container").style.visibility = "visible";
+}
+
+function hideAll(){
+    document.getElementById("first-container").style.visibility = "collapse";
+    document.getElementById("follow-container").style.visibility = "collapse";
+}
+
+function resetAll(){
+    terminals = [];
+    nonTerminals = [];
+    productionRules = {};
+    first = {};
+    follow = {};
+
+    document.getElementById("first-container").style.visibility = "collapse";
+    document.getElementById("follow-container").style.visibility = "collapse";
+    const container = document.getElementById("input-form");
+    container.innerHTML = "<div class=\"title\"><h3>Eingabe</h3>" +
+        "                <button class=\"wide-button\" id=\"parse-grammar-button\" onclick=\"parseGrammar()\">\n" +
+        "                    <img src=\"../resources/caret-right-fill.svg\"/>\n" +
+        "                </button>\n" +
+        "                </div>\n" +
+        "                <div id=\"disabled-start-field\" class=\"input-field\">\n" +
+        "                   <button class=\"button\"></button\n" +
+        "                   ><input disabled type=\"text\" maxlength=\"1\" class=\"nonterminal\" value=\"X\"\n" +
+        "                   /><span>&#8594;</span\n" +
+        "                   ><input disabled type=\"text\" class=\"production-rule\" value=\"S\"/>\n" +
+        "               </div>\n" +
+        "               <div class=\"input-field\">\n" +
+        "                   <button class=\"button\" onclick=\"deleteField(this)\"\n" +
+        "                   ><img src=\"../resources/trash.svg\"\n" +
+        "                   /></button><input type=\"text\" maxlength=\"1\" class=\"nonterminal\"\n" +
+        "                   /><span>&#8594;</span><input type=\"text\" class=\"production-rule\"/>\n" +
+        "               </div>\n" +
+        "               <button class=\"wide-button\" id=\"add-field-button\" onclick=\"addField()\">+</button>"
 }
 
 

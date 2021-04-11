@@ -5,7 +5,7 @@ function closure(collection) {
         for (let i = 0; i < collection.length; i++) {
             if(collection[i].indexOf(".") !== collection[i].length - 1) {
                 log("Symbols after . : " + collection[i].split(".")[1]);
-                nextSymbol = collection[i].split(".")[1][0];
+                let nextSymbol = collection[i].split(".")[1][0];
                 log("Next symbol: " + nextSymbol);
                 if (isNT(nextSymbol)) {
                     for (let j = 0; j < productionRules[nextSymbol].length; j++) {

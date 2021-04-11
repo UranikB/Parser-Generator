@@ -1,8 +1,5 @@
 function fillInput(productionRules){
-    let fields = document.getElementsByClassName("input-field");
-    for (let i = productionRules.length - 1 ; i <= fields.length; i++){
-        document.getElementById("input-form").removeChild(fields[i]);
-    }
+    resetAll();
 
     const container = document.getElementById("input-form");
     let counter = 0;
