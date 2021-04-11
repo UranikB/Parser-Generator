@@ -23,4 +23,19 @@ function closure(collection) {
     return collection;
 }
 
+function jump(collection, symbol){
+    let newCollection = [];
+    for (let i = 0; i < collection.length; i++) {
+        log("New Iteration")
+        log(collection[i]);
+        log(newCollection);
+        if (collection[i].includes("." + symbol)){
+            let newElement = collection[i].split("." + symbol)[0] + symbol + "." + collection[i].split("." + symbol)[1];
+            append(newElement, newCollection);
+        }
+        log(newCollection)
+    }
+    return closure(newCollection);
+}
+
 
