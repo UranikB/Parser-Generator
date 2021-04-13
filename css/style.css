@@ -162,7 +162,7 @@ body {
 
 #table-container {
     transition: transform .2s;
-    visibility: collapse;
+    visibility: visible;
     margin: 15px;
 }
 
@@ -175,6 +175,23 @@ body {
     background: #fff;
     border-radius: 15px;
     box-shadow: #777 3px 3px 3px;
+}
+
+.th, td {
+    padding: 5px;
+    text-align: left;
+}
+
+.table, td, th {
+    border: 1px solid black;
+}
+
+.parse-table {
+    border-collapse: collapse;
+    margin: 15px;
+    width: calc(100% - 32px);
+    table-layout: fixed;
+
 }
 
 .symbol-text{

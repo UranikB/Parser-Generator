@@ -17,11 +17,11 @@ function parseGrammar() {
         console.timeEnd("Follow");
         showFirst();
         showFollow();
+        createTable();
     } catch (e) {
         document.getElementById("parse-grammar-button").style.backgroundColor = "red";
     }
 }
-
 
 function getInput() {
     const container = document.getElementById("input-form");

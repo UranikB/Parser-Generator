@@ -35,6 +35,64 @@ function deleteField(button){
     field.parentElement.removeChild(field);
 }
 
+function createTable(){
+    let div = document.getElementById("third-row");
+
+    let table = document.createElement('TABLE');
+    table.classList.add("parse-table");
+
+    let input = getInput();
+
+    let firstTableHead = document.createElement('TR');
+    table.appendChild(firstTableHead);
+    let emptyCell = document.createElement('TD');
+    let action = document.createElement('TD');
+    let jump = document.createElement('TD');
+    action.colSpan = input[0].length;
+    jump.colSpan = input[1].length;
+    action.appendChild(document.createTextNode("Aktion"));
+    jump.appendChild(document.createTextNode("Sprung"));
+    firstTableHead.appendChild(emptyCell);
+    firstTableHead.appendChild(action);
+    firstTableHead.appendChild(jump);
+
+
+    let secondTableHead = document.createElement('TR');
+    table.appendChild(secondTableHead);
+    let state = document.createElement('TD');
+    state.appendChild(document.createTextNode("Zustand"));
+    secondTableHead.appendChild(state);
+    for (let i = 0; i < input[0].length; i++) {
+        let nonTerminalCell = document.createElement('TD');
+        nonTerminalCell.appendChild(document.createTextNode(input[0][i]));
+        secondTableHead.appendChild(nonTerminalCell);
+    }
+    for (let i = 0; i < input[1].length; i++) {
+        let terminalCell = document.createElement('TD');
+        terminalCell.appendChild(document.createTextNode(input[1][i]));
+        secondTableHead.appendChild(terminalCell);
+    }
+
+
+    let tableBody = document.createElement('TBODY');
+    table.appendChild(tableBody);
+    for (let i = 0; i < 10; i++) {                             //Example for ten states
+        let tableRow = document.createElement('TR');
+        tableBody.appendChild(tableRow);
+        for (let j = 0; j <= input[0].length + input[1].length; j++) {
+            let cell = document.createElement('TD');
+            if(j === 0){
+                let spanNode = document.createElement('SPAN');
+                spanNode.innerHTML = "I<sub>" + i + "</sub>"
+                cell.appendChild(spanNode);
+            }
+            tableRow.appendChild(cell);
+        }
+    }
+
+    div.appendChild(table);
+}
+
 function showFirst(){
     const container = document.getElementById("first-form");
     container.innerHTML = "";
@@ -82,6 +140,8 @@ function showFollow(){
 function hideAll(){
     document.getElementById("first-container").style.visibility = "collapse";
     document.getElementById("follow-container").style.visibility = "collapse";
+    const thirdRow = document.getElementById("third-row");
+    thirdRow.innerHTML = "";
 }
 
 function resetAll(){
@@ -112,6 +172,9 @@ function resetAll(){
         "                   /><span>&#8594;</span><input type=\"text\" class=\"production-rule\"/>\n" +
         "               </div>\n" +
         "               <button class=\"wide-button\" id=\"add-field-button\" onclick=\"addField()\">+</button>"
+
+    const thirdRow = document.getElementById("third-row");
+    thirdRow.innerHTML = "";
 }
 
 
