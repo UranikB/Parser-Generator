@@ -183,15 +183,31 @@ body {
 }
 
 .table, td, th {
-    border: 1px solid black;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #444444;
 }
 
 .parse-table {
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #444444;
     margin: 15px;
     width: calc(100% - 32px);
     table-layout: fixed;
 
+}
+
+.thickBorderCell {
+    border-right-color: black;
+    border-right-width: 2px;
+}
+
+.headerCell {
+    border-bottom-color: black;
+    border-bottom-width: 2px;
 }
 
 .symbol-text{

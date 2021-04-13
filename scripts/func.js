@@ -50,6 +50,8 @@ function createTable(){
     let jump = document.createElement('TD');
     action.colSpan = input[0].length;
     jump.colSpan = input[1].length;
+    emptyCell.classList.add("thickBorderCell");
+    action.classList.add("thickBorderCell");
     action.appendChild(document.createTextNode("Aktion"));
     jump.appendChild(document.createTextNode("Sprung"));
     firstTableHead.appendChild(emptyCell);
@@ -61,15 +63,20 @@ function createTable(){
     table.appendChild(secondTableHead);
     let state = document.createElement('TD');
     state.appendChild(document.createTextNode("Zustand"));
+    state.classList.add("thickBorderCell");
+    state.classList.add("headerCell");
     secondTableHead.appendChild(state);
     for (let i = 0; i < input[0].length; i++) {
         let nonTerminalCell = document.createElement('TD');
         nonTerminalCell.appendChild(document.createTextNode(input[0][i]));
+        if (i === input[0].length - 1) nonTerminalCell.classList.add("thickBorderCell");
+        nonTerminalCell.classList.add("headerCell");
         secondTableHead.appendChild(nonTerminalCell);
     }
     for (let i = 0; i < input[1].length; i++) {
         let terminalCell = document.createElement('TD');
         terminalCell.appendChild(document.createTextNode(input[1][i]));
+        terminalCell.classList.add("headerCell");
         secondTableHead.appendChild(terminalCell);
     }
 
@@ -83,8 +90,11 @@ function createTable(){
             let cell = document.createElement('TD');
             if(j === 0){
                 let spanNode = document.createElement('SPAN');
-                spanNode.innerHTML = "I<sub>" + i + "</sub>"
+                spanNode.innerHTML = "I<sub>" + i + "</sub>";
                 cell.appendChild(spanNode);
+            }
+            if(j === 0 || j === input[0].length){
+                cell.classList.add("thickBorderCell");
             }
             tableRow.appendChild(cell);
         }
