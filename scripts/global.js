@@ -4,6 +4,7 @@ let logging = "ALL";
 
 let EMPTY = "-";
 let STARTSYMBOL = "X";
+let STARTPRODUKTION = "S";
 
 let terminals = [];
 let nonTerminals = [];

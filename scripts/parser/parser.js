@@ -22,6 +22,7 @@ function parseGrammar() {
     } catch (e) {
         document.getElementById("parse-grammar-button").style.backgroundColor = "red";
     }
+    generateStates();
 }
 
 function getInput() {
