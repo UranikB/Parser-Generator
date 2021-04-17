@@ -1,6 +1,5 @@
 function fillInput(productionRules){
     resetAll();
-
     const container = document.getElementById("input-form");
     let counter = 0;
     for (let i = 0; i < Object.keys(productionRules).length; i++) {
@@ -21,10 +20,10 @@ function fillInput(productionRules){
 
 function getTestProductionRules() {
     EMPTY = '-';
-    return {X: ['S'], S: ['ABCDEF | ABC | a'], A : ['BC', 'aB'], B: ['C', 'b'], C: ['c | | c'], D: ['d'], E: ['e', '-'], F: ['f']}
+    return {X: ['S'], S: ['A B C D E F | A B C | a'], A : ['B C', 'a B'], B: ['C', 'b'], C: ['c | | c'], D: ['d'], E: ['e', '-'], F: ['f']}
 }
 
 function getMathGrammar(){
-    EMPTY = 'e';
-    return{X: ['S'], S: ['S+S', 'S-S', 'P'], P: ['P*P', 'B*P', 'P*B', 'B*B', 'E'], B: ['(S)', 'a'], E: ['B^B']}
+    EMPTY = "epsilon";
+    return{X: ["Summe"], Summe: ["Summe + Summe", "Summe - Summe", "Produkt"], Produkt: ["Produkt * Produkt", "Klammer", "Exponent"], Klammer: ["( Summe )", "Konstante"], Exponent: ["Klammer ^ Klammer"]}
 }

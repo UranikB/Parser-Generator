@@ -67,14 +67,14 @@
             </div>
             <div id="disabled-start-field" class="input-field">
                 <button class="button"></button
-                ><input disabled type="text" maxlength="1" class="nonterminal" value="X"
+                ><input disabled type="text" class="nonterminal" value="X"
                 /><span>&#8594;</span
             ><input disabled type="text" class="production-rule" value="S"/>
             </div>
             <div class="input-field">
                 <button class="button" onclick="deleteField(this)"
                 ><img src="../resources/trashcan.png"
-                /></button><input type="text" maxlength="1" class="nonterminal" onchange="hideAll()"
+                /></button><input type="text" class="nonterminal" onchange="hideAll()"
             /><span>&#8594;</span><input type="text" class="production-rule"  onchange="hideAll()"/>
             </div>
             <button class="wide-button" id="add-field-button" onclick="addField()">

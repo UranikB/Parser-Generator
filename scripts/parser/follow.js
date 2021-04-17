@@ -21,10 +21,6 @@ function generateFollow(terminals, nonTerminals, productionRules){
             }
             for (let j = 0; j < productionRules[nonTerminals[i]].length; j++) {
                 log("       Going through production rule " + productionRules[nonTerminals[i]][j] + " of " + nonTerminals[i]);
-                // if(productionRules[nonTerminals[i]][j].length === 0){
-                //     log("           Rule invalid");
-                // }
-                // else {
                     for (let k = 0; k < productionRules[nonTerminals[i]][j].length - 1; k++) {
                         log("               Checking " + productionRules[nonTerminals[i]][j][k]);
                         let firstSet = first[productionRules[nonTerminals[i]][j][k+1]];
@@ -50,7 +46,6 @@ function generateFollow(terminals, nonTerminals, productionRules){
 
                         }
                     }
-                // }
                 log("           Checking last element " + productionRules[nonTerminals[i]][j][productionRules[nonTerminals[i]][j].length - 1]);
                 for (let k = 0; k < follow[nonTerminals[i]].length; k++) {
                     log("           Follow of non terminal " + nonTerminals[i] + " to be added: " + follow[nonTerminals[i]][k]);
@@ -59,7 +54,6 @@ function generateFollow(terminals, nonTerminals, productionRules){
                         log("               Changed was set to true");
                     }
                 }
-
             }
         }
         log(counter + ". iteration complete. Follow: ");
@@ -70,6 +64,7 @@ function generateFollow(terminals, nonTerminals, productionRules){
 
     log("Empty Symbols get removed.");
 
+    let defined = true;
     for (let i = 0; i < Object.keys(follow).length; i++) {
         log("   Filtering rule " + follow[Object.keys(follow)[i]] + " of " + Object.keys(follow));
         if(Object.keys(follow)[i] === EMPTY){
@@ -83,8 +78,20 @@ function generateFollow(terminals, nonTerminals, productionRules){
             }
         }
         log("         Result of filter: " + follow[Object.keys(follow)[i]]);
-    }
+        log("         Checking if " + follow[Object.keys(follow)[i]] + " is defined.");
+        if(typeof follow[Object.keys(follow)[i]][0] === "undefined"){
+            log("               It is not defined.");
+            let nts = document.getElementsByClassName("nonterminal");
+            for (let j = 0; j < nts.length; j++) {
+                if(nts[j].value === Object.keys(follow)[i]){
+                    nts[j].style.backgroundColor = "red";
+                    defined = false;
+                }
+            }
 
+        }
+    }
+    if(!defined) throw "Invalid Symbol";
     log(follow);
 }
 

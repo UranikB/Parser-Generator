@@ -36,7 +36,7 @@ function getInput() {
     nonTerminals = [];
 
     for (let i = 0; i < nonTerminalInput.length; i++) {
-        nonTerminals.push(nonTerminalInput[i].value)
+        append(nonTerminalInput[i].value, nonTerminals);
     }
 
 

@@ -1,10 +1,10 @@
 /**
  * Checks whether str is nonterminal
- * @param sym: to be checked
+ * @param symbol: to be checked
  * @returns boolean
  */
-function isNT(sym) {
-    return nonTerminals.includes(sym);
+function isNT(symbol) {
+    return nonTerminals.includes(symbol);
 }
 
 /**

@@ -6,7 +6,6 @@ function addField(){
 
     const input1 = document.createElement("input");
     input1.classList.add("nonterminal");
-    input1.maxLength = 1;
     input1.type = "text";
     input1.onchange =  hideAll;
 
@@ -148,6 +147,19 @@ function showFollow(){
 }
 
 function hideAll(){
+    terminals = [];
+    nonTerminals = [];
+    productionRules = {};
+    first = {};
+    follow = {};
+
+    document.getElementById("parse-grammar-button").style.backgroundColor = "white";
+
+    let nts = document.getElementsByClassName("nonterminal");
+    for (let i = 0; i < nts.length; i++) {
+        nts[i].style.backgroundColor = "white";
+    }
+
     document.getElementById("first-container").style.visibility = "collapse";
     document.getElementById("follow-container").style.visibility = "collapse";
     const thirdRow = document.getElementById("third-row");
@@ -171,15 +183,15 @@ function resetAll(){
         "                </div>\n" +
         "                <div id=\"disabled-start-field\" class=\"input-field\">\n" +
         "                   <button class=\"button\"></button\n" +
-        "                   ><input disabled type=\"text\" maxlength=\"1\" class=\"nonterminal\" value=\"X\"\n" +
+        "                   ><input disabled type=\"text\" class=\"nonterminal\" value=\"X\"\n" +
         "                   /><span>&#8594;</span\n" +
         "                   ><input disabled type=\"text\" class=\"production-rule\" value=\"S\"/>\n" +
         "               </div>\n" +
         "               <div class=\"input-field\">\n" +
         "                   <button class=\"button\" onclick=\"deleteField(this)\"\n" +
         "                   ><img src=\"../resources/trashcan.png\"\n" +
-        "                   /></button><input type=\"text\" maxlength=\"1\" class=\"nonterminal\"\n" +
-        "                   /><span>&#8594;</span><input type=\"text\" class=\"production-rule\"/>\n" +
+        "                   /></button><input type=\"text\" class=\"nonterminal\" onchange=\"hideAll()\"\n" +
+        "                   /><span>&#8594;</span><input type=\"text\" class=\"production-rule\" onchange=\"hideAll()\"/>\n" +
         "               </div>\n" +
         "               <button class=\"wide-button\" id=\"add-field-button\" onclick=\"addField()\">+</button>"
 
@@ -254,16 +266,20 @@ function correctFollow(symbol){
     }
     output.value = result;
 
-    let inputArray = [];
+    let inputArray;
+    let commaCounter = 0;
+    let semiColonCounter = 0;
     for (let i = 0; i < input.value.length; i++) {
-        if(input.value[i] !== "{"
-            && input.value[i] !== "}"
-            && input.value[i] !== ","
-            && input.value[i] !== ";"
-            && input.value[i] !== " "){
-            inputArray.push(input.value[i]);
+        if (input.value[i] === "{" || input.value[i] === "}") {
+            input.value[i] = "";
         }
+        if(input.value[i] === ",") commaCounter++;
+        if(input.value[i] === ";") semiColonCounter++;
     }
+
+    if(commaCounter > semiColonCounter) inputArray = input.value.split(", ");
+    else if (commaCounter < semiColonCounter) inputArray = input.value.split("; ");
+    else inputArray = input.value.split(" ");
 
     if(compareArrays(inputArray, follow[symbol])){
         output.style.color = "green";
