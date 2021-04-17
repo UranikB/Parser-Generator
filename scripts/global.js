@@ -1,5 +1,5 @@
 /* Options: ALL = All; OBJECTS = Objects; NONE = None */
-let logging = "ALL";
+let logging = "NONE";
 
 
 let EMPTY = "-";

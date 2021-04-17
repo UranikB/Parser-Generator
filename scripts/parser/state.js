@@ -1,3 +1,86 @@
+class Element {
+    constructor(rule, index) {
+        if(index <= rule.length) {
+            this.rule = rule;
+            this.index = index;
+        } else {
+            throw "Invalid element"
+        }
+    }
+
+    equals(element){
+        let equals = false;
+        if(element.index === this.index && element.rule.length === this.rule.length) {
+            equals = true;
+            for (let i = 0; i < this.rule.length; i++) {
+                if(this.rule[i] !== element.rule){
+                    equals = false;
+                    break;
+                }
+            }
+        }
+        return equals;
+    }
+
+    isNotFinished(){
+        return (this.index < this.rule.length);
+    }
+
+    followingSymbol() {
+        if (this.isNotFinished()) {
+            return this.rule[this.index];
+        } else {
+            return '';
+        }
+    }
+}
+
+Element.prototype.toString = function elementToString() {
+    let ret;
+    if(this.index === 0){
+        ret = "." + this.rule[0];
+    } else {
+        ret = this.rule[0];
+    }
+    for (let i = 1; i < this.rule.length; i++) {
+        if(i === this.index){
+            ret += (" ." + this.rule[i]);
+        } else {
+            ret += (" " + this.rule[i]);
+        }
+    }
+    if(this.index === this.rule.length){
+        ret += ".";
+    }
+    return ret;
+};
+
+class Elements {
+    constructor(elements) {
+        this.elements = elements;
+    }
+
+    has(element){
+        let isIncluded = false;
+        for (let i = 0; i < this.elements.length ; i++) {
+            if(element.equals(this.elements[i])){
+                isIncluded = true;
+                break;
+            }
+        }
+        return isIncluded;
+    }
+
+    append(element){
+        if(!(this.elements.has(element))){
+            this.elements.push(element);
+            return true;
+        }
+        return false;
+    }
+}
+
+
 function closure(collection) {
     let changed = true;
     while (changed){
@@ -48,9 +131,6 @@ function generateStates() {
     log("initial Collection: ");
     log(initialCollection);
     let states = [initialCollection];
-    // for (let i = 0; i < jumps.length; i++) {
-    //
-    // }
     let changed = true;
     while (changed) {
         changed = false;

@@ -24,6 +24,6 @@ function getTestProductionRules() {
 }
 
 function getMathGrammar(){
-    EMPTY = "epsilon";
-    return{X: ["Summe"], Summe: ["Summe + Summe", "Summe - Summe", "Produkt"], Produkt: ["Produkt * Produkt", "Klammer", "Exponent"], Klammer: ["( Summe )", "Konstante"], Exponent: ["Klammer ^ Klammer"]}
+    EMPTY = 'e';
+    return{X: ['S'], S: ['S + S', 'S - S', 'P'], P: ['P * P', 'B * P', 'P * B', 'B * B', 'E'], B: ['( S )', 'a'], E: ['B ^ B']}
 }
