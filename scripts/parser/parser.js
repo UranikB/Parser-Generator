@@ -33,9 +33,12 @@ function getInput() {
     let processedProductionRules = [];
     let processedNonTerminals = [];
 
-    let productionRules = {};
-    let terminals = [];
-    let nonTerminals = ['X'];
+    nonTerminals = [];
+
+    for (let i = 0; i < nonTerminalInput.length; i++) {
+        nonTerminals.push(nonTerminalInput[i].value)
+    }
+
 
     for (let i = 0; i < productionRulesInput.length ; i++) {
         let rules = productionRulesInput[i].value.split('|');
@@ -48,27 +51,29 @@ function getInput() {
     log(processedProductionRules);
 
     for (let i = 0; i < processedNonTerminals.length; i++) {
-        let rule = processedProductionRules[i].replace(/\s+/g, '');
-        if(rule === ""){
-            rule = EMPTY;
+        let symbolInput = processedProductionRules[i].split(' ');
+        let isEmpty = true;
+        let processedSymbols = [];
+
+        for (let j = 0; j < symbolInput.length; j++) {
+            if(symbolInput[j] !== ''){
+                if(!(isNT(symbolInput[j]))){
+                    append(symbolInput[j], terminals);
+                }
+                isEmpty = false;
+                processedSymbols.push(symbolInput[j]);
+            }
         }
+        if(isEmpty){
+            processedSymbols.push(EMPTY);
+        }
+
         if(!(processedNonTerminals[i] in productionRules)){
             productionRules[processedNonTerminals[i]] = [];
         }
-        productionRules[processedNonTerminals[i]].push(rule);
-        for (let j = 0; j < processedProductionRules[i].length; j++) {
-            if(!(processedProductionRules[i][j] === " ")){
-                if(isNT(processedProductionRules[i][j])){
-                    append(processedProductionRules[i][j], nonTerminals);
-                }
-                else{
-                    append(processedProductionRules[i][j], terminals);
-                }
-            }
-
-        }
+        productionRules[processedNonTerminals[i]].push(processedSymbols);
     }
-    log([terminals, nonTerminals, productionRules]);
+    console.log([terminals, nonTerminals, productionRules]);
 
     return [terminals, nonTerminals, productionRules];
 }

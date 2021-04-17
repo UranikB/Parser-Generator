@@ -1,10 +1,10 @@
 /**
  * Checks whether str is nonterminal
- * @param str: to be checked
+ * @param sym: to be checked
  * @returns boolean
  */
-function isNT(str) {
-    return str.length === 1 && !!str.match(/[A-Z]/);
+function isNT(sym) {
+    return nonTerminals.includes(sym);
 }
 
 /**
