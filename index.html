@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Parser Generator</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+
+    <script type='text/javascript' src="../scripts/func.js"></script>
+    <script type='text/javascript' src="../scripts/global.js"></script>
+    <script type='text/javascript' src="../scripts/util.js"></script>
+    <script type='text/javascript' src="../scripts/test.js"></script>
+    <script type='text/javascript' src="../scripts/parser/sorting.js"></script>
+    <script type='text/javascript' src="../scripts/parser/first.js"></script>
+    <script type='text/javascript' src="../scripts/parser/follow.js"></script>
+    <script type='text/javascript' src="../scripts/parser/state.js"></script>
+    <script type='text/javascript' src="../scripts/parser/parser.js"></script>
+    <script type='text/javascript' src="../scripts/parser/follow.js"></script>
+</head>
+<body>
+<div class="container">
+    <div>
+        <ul id="menu">
+            <li class="menubar"><a class="menubarentry" href="#home">Startseite</a></li>
+            <li class="menubar"><a class="menubarentry" href="#help" onclick="hideAll()">Hilfe</a></li>
+            <li class="menubar"><a class="menubarentry" href="#contact" onclick="resetAll()">Kontakt</a></li>
+            <li class="menubar"><a class="menubarentry" href="#about">Info</a></li>
+        </ul>
+    </div>
+
+    <div id="first-row">
+        <div class="card" id="description">
+            <div class="title">
+                <h3>Beschreibung</h3>
+            </div>
+            <div class="content">
+                <p>[Platz für Beschreibung]</p>
+            </div>
+        </div>
+        <div class="card" id="manual">
+            <div class="title">
+                <h3>Anleitung</h3>
+            </div>
+            <div class="content">
+                <p>[Anleitung zur Nutzung]</p>
+            </div>
+        </div>
+        <div class="card" id="samples">
+            <div class="title">
+                <h3>Beispiele</h3>
+            </div>
+            <div class="content">
+                <a onclick="fillInput(getMathGrammar())">Math Grammar</a>
+                <br>
+                <a onclick="fillInput(getSmallMathGrammar())">Smaller Math Grammar</a>
+                <br>
+                <a onclick="fillInput(getSmallGrammar())">Small Grammar</a>
+                <br>
+                <a onclick="fillInput(getOrdinarylySizedGrammar())">Ordinarily Sized Grammar</a>
+                <br>
+                <a onclick="fillInput(getTotallyOversizedGrammar())">Totally oversized Grammar</a>
+                <p>[Einige Beispiele]</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="second-row">
+        <div id="input-form">
+            <div class="title">
+                <h3>Eingabe</h3>
+                <button class="wide-button" id="parse-grammar-button" onclick="parseGrammar()">
+                    <img src="../resources/caret-right-fill.svg"/>
+                </button>
+            </div>
+            <div id="disabled-start-field" class="input-field">
+                <button class="button"></button
+                ><input disabled type="text" class="nonterminal" value="X"
+                /><span>&#8594;</span
+            ><input disabled type="text" class="production-rule" value="S"/>
+            </div>
+            <div class="input-field">
+                <button class="button" onclick="deleteField(this)"
+                ><img src="../resources/trashcan.png"
+                /></button><input type="text" class="nonterminal" onchange="hideAll()"
+            /><span>&#8594;</span><input type="text" class="production-rule"  onchange="hideAll()"/>
+            </div>
+            <button class="wide-button" id="add-field-button" onclick="addField()">
+                +
+            </button>
+        </div>
+
+        <div id="first-container">
+            <div class="title">
+                <h3>First</h3>
+                <button class="wide-button" onclick="correctAllFirsts()">
+                    <img src="../resources/caret-right-fill.svg"/>
+                </button>
+            </div>
+            <div id="first-form"></div>
+        </div>
+
+        <div id="follow-container">
+            <div class="title">
+                <h3>Follow</h3>
+                <button class="wide-button" onclick="correctAllFollows()">
+                    <img src="../resources/caret-right-fill.svg"/>
+                </button>
+            </div>
+            <div id="follow-form"></div>
+        </div>
+    </div>
+
+    <div id="third-row">
+    </div>
+
+</div>
+</body>
+</html>
