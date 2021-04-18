@@ -1,5 +1,11 @@
 class Element {
     constructor(rule, index) {
+        if(rule === undefined){
+            rule = [];
+        }
+        if(index === undefined){
+            index = 0;
+        }
         if(index <= rule.length) {
             this.rule = rule;
             this.index = index;
@@ -13,7 +19,7 @@ class Element {
         if(element.index === this.index && element.rule.length === this.rule.length) {
             equals = true;
             for (let i = 0; i < this.rule.length; i++) {
-                if(this.rule[i] !== element.rule){
+                if(this.rule[i] !== element.rule[i]){
                     equals = false;
                     break;
                 }
@@ -55,6 +61,9 @@ Element.prototype.toString = function elementToString() {
 
 class Collection {
     constructor(elements) {
+        if(elements === undefined){
+            elements = [];
+        }
         this.elements = elements;
     }
 
@@ -97,8 +106,15 @@ class Collection {
     }
 }
 
+Collection.prototype.toString = function collectionToString() {
+    return this.elements.toString()
+};
+
 class Collections {
     constructor(collections) {
+        if(collections === undefined){
+            collections = [];
+        }
         this.collections = collections;
     }
 
@@ -121,6 +137,10 @@ class Collections {
         return false;
     }
 }
+
+Collections.prototype.toString = function collectionsToString() {
+    return this.collections.toString()
+};
 
 function closure(collection) {
     log("                   Calculating (" + collection + ")-Closure");
@@ -159,14 +179,14 @@ function closure(collection) {
 
 function jump(collection, symbol){
     log("                   Calculating (" + collection + ", " + symbol + ")-Jump");
-    let jumps = [];
+    let jumps = new Collection();
     for (let i = 0; i < collection.elements.length; i++) {
         if(collection.elements[i].isNotFinished()) {
             log("                       Current collection: " + collection.elements[i]);
             if (collection.elements[i].followingSymbol() === symbol) {
                 log("                       Found symbol: " + symbol + " after \'.\' in: " + collection.elements[i]);
                 let element = new Element(collection.elements[i].rule, collection.elements[i].index + 1);
-                if (append(element, jumps)) log("                       Found symbol: " + symbol + " after \'.\' in: " + collection.elements[i]);
+                if (jumps.append(element)) log("                       Found symbol: " + symbol + " after \'.\' in: " + collection.elements[i]);
             }
         } else {
             log("                       " + collection.elements[i] + " is finished");
@@ -190,10 +210,10 @@ function generateStates() {
     while (changed) {
         changed = false;
         log("   " + itr + ". iteration: ", collection);
-        for (let i = 0; i < states.length; i++) {
+        for (let i = 0; i < states.collections.length; i++) {
             log("       Current state: ", states[i]);
-            for (let j = 0; j < states[i].length; j++) {
-                log("           Current element: ", states[i][j]);
+            for (let j = 0; j < states.collections[i].length; j++) {
+                log("           Current element: ", states.collections[i].elements[j]);
                 if (states.collections[i].elements[j].isNotFinished()) {
                     let nextSymbol = states.collections[i].elements[j].followingSymbol();
                     log("               Following Symbol: ", nextSymbol);
@@ -235,4 +255,14 @@ function addCollection(destination, source) {
         source.push(destination);
     }
     return !isContained;
+}
+
+function test() {
+    let rule = ["S","+","S"];
+    let element = new Element(rule, 0);
+
+    let rule2 = ["S","+","S"];
+    let element2 = new Element(rule2, 0);
+
+    alert(element.equals(element2))
 }
