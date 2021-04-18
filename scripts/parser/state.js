@@ -29,8 +29,6 @@ class Element {
     followingSymbol() {
         if (this.isNotFinished()) {
             return this.rule[this.index];
-        } else {
-            return '';
         }
     }
 }
@@ -72,7 +70,7 @@ class Collection {
     }
 
     append(element){
-        if(!(this.elements.has(element))){
+        if(!(this.has(element))){
             this.elements.push(element);
             return true;
         }
@@ -116,7 +114,7 @@ class Collections {
     }
 
     append(collection){
-        if(!(this.collections.has(collection))){
+        if(!(this.has(collection))){
             this.collections.push(collection);
             return true;
         }
@@ -125,83 +123,96 @@ class Collections {
 }
 
 function closure(collection) {
+    log("                   Calculating (" + collection + ")-Closure");
     let changed = true;
+
+    let itr = 1;
+
     while (changed){
         changed = false;
-        for (let i = 0; i < collection.length; i++) {
-            if(collection[i].isNotFinished()) {
-                let nextSymbol = collection[i].followingSymbol();
-                log("Next symbol: " + nextSymbol);
+        log("                       " + itr + ". iteration");
+        for (let i = 0; i < collection.elements.length; i++) {
+            if(collection.elements[i].isNotFinished()) {
+                let nextSymbol = collection.elements[i].followingSymbol();
+                log("                           Current collection: " + collection.elements[i]);
                 if (isNT(nextSymbol)) {
+                    log("                               Is nonTerminal");
                     for (let j = 0; j < productionRules[nextSymbol].length; j++) {
                         let element = new Element(productionRules[nextSymbol][j],0);
+                        log("                               Current element: " + element);
                         if (collection.append(element)) {
-                            log("Added element: " + element);
+                            log("                               Added current element to: " + collection);
                             changed = true;
                         } else {
-                            log("Element already contained: " + element);
+                            log("                               Element already contained in: " + collection);
                         }
                     }
                 }
             } else {
-                log("No symbols after .");
+                log("                           " + collection.elements[i] + " is finished");
             }
         }
-        if (changed) log ("Changes detected, current closure: " + collection)
+        if (changed) log ("                       Changes detected, current closure: " + collection)
     }
     return collection;
 }
 
 function jump(collection, symbol){
+    log("                   Calculating (" + collection + ", " + symbol + ")-Jump");
     let jumps = [];
-    for (let i = 0; i < collection.length; i++) {
-        log("New Iteration");
-        log(collection[i]);
-        if (collection[i].includes("." + symbol)){
-            let newElement = collection[i].split("." + symbol)[0] + symbol + "." + collection[i].split("." + symbol)[1];
-            append(newElement, jumps);
+    for (let i = 0; i < collection.elements.length; i++) {
+        if(collection.elements[i].isNotFinished()) {
+            log("                       Current collection: " + collection.elements[i]);
+            if (collection.elements[i].followingSymbol() === symbol) {
+                log("                       Found symbol: " + symbol + " after \'.\' in: " + collection.elements[i]);
+                let element = new Element(collection.elements[i].rule, collection.elements[i].index + 1);
+                if (append(element, jumps)) log("                       Found symbol: " + symbol + " after \'.\' in: " + collection.elements[i]);
+            }
+        } else {
+            log("                       " + collection.elements[i] + " is finished");
         }
-        log(jumps)
     }
-    log(closure(jumps));
     return closure(jumps);
 }
 
 function generateStates() {
+    log("Generating States:");
     let startingElement = new Element(STARTPRODUCTION, 0);
     let collection = new Collection([startingElement]);
     closure(collection);
-    log("initial Collection: ");
-    log(collection);
+
+    log("   Initial Collection: ", collection);
     let states = new Collections([collection]);
     let changed = true;
+
+    let itr = 1;
+
     while (changed) {
         changed = false;
+        log("   " + itr + ". iteration: ", collection);
         for (let i = 0; i < states.length; i++) {
+            log("       Current state: ", states[i]);
             for (let j = 0; j < states[i].length; j++) {
-                // log(". at: " + states[i][j].indexOf("."));
-                // log("Length: ");
-                // log(states[i][j].length - 1);
-                if (states[i][j].isNotFinished()) {
-                    let nextSymbol = states[i][j].followingSymbol();
-                    // log("Next Symbol: ");
-                    // log(nextSymbol);
-                    //if (isNT(nextSymbol)) {
-                        let collection = jump(states[i], nextSymbol);
-                        // log("Collection: ");
-                        // log(collection);
+                log("           Current element: ", states[i][j]);
+                if (states.collections[i].elements[j].isNotFinished()) {
+                    let nextSymbol = states.collections[i].elements[j].followingSymbol();
+                    log("               Following Symbol: ", nextSymbol);
+                    let collection = jump(states.collections[i], nextSymbol);
+                    log("               Returned Collection: " + collection);
                         if(states.append(collection)){
-                            //log("Added Collection: " + collection);
+                            log("               Appended Collection to states");
                             changed = true;
                         } else {
-                            //log("Collection already contained: " + collection);
+                            log("               Collection already contained");
                         }
-                    //}
+                } else {
+                    log("               Element is finished");
                 }
             }
         }
+        itr++;
     }
-    console.log("RES:");
+    console.log("Final States:");
     console.log(states);
 }
 
