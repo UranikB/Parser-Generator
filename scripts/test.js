@@ -18,7 +18,7 @@ function fillInput(productionRules){
 //     return {X: ['S'], S: ['ABCDEF', 'ABC'], A : ['BC', 'aB'], B: ['C', 'b'], C: ['c', '-'], D: ['d'], E: ['e', '-'], F: ['f']};
 // }
 
-function getTestProductionRules() {
+function getTotallyOversizedGrammar() {
     EMPTY = '-';
     return {X: ['S'], S: ['A B C D E F | A B C | a'], A : ['B C', 'a B'], B: ['C', 'b'], C: ['c | | c'], D: ['d'], E: ['e', '-'], F: ['f']}
 }
@@ -26,4 +26,19 @@ function getTestProductionRules() {
 function getMathGrammar(){
     EMPTY = 'e';
     return{X: ['S'], S: ['S + S', 'S - S', 'P'], P: ['P * P', 'B * P', 'P * B', 'B * B', 'E'], B: ['( S )', 'a'], E: ['B ^ B']}
+}
+
+function getSmallMathGrammar(){
+    EMPTY = 'e';
+    return{X: ['S'], S: ['S + T', 'T'], T: ['T * F', 'F'], F: ['( S )', 'const']}
+}
+
+function getSmallGrammar(){
+    EMPTY = '-'
+    return{X: ['S'], S: ['A + S', 'A'], A: ['a']}
+}
+
+function getOrdinarylySizedGrammar(){
+    EMPTY = '-'
+    return{X: ['S'], S: ['A + S', 'B - S', 'C'], A: ['A a', 'a'], B: ['B b', 'b'], C: ['C c', 'c']}
 }

@@ -156,7 +156,7 @@ function hideAll(){
     document.getElementById("parse-grammar-button").style.backgroundColor = "white";
 
     let nts = document.getElementsByClassName("nonterminal");
-    for (let i = 0; i < nts.length; i++) {
+    for (let i = 1; i < nts.length; i++) {
         nts[i].style.backgroundColor = "white";
     }
 

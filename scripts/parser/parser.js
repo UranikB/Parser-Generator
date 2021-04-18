@@ -26,7 +26,7 @@ function parseGrammar() {
     } catch (e) {
         document.getElementById("parse-grammar-button").style.backgroundColor = "red";
     }
-    logging = "ALL";
+    logging = "NONE";
    generateStates();
 }
 
