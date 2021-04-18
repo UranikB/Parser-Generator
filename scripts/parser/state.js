@@ -1,5 +1,8 @@
 class Element {
-    constructor(rule, index) {
+    constructor(nonTerminalSymbol, rule, index) {
+        if(nonTerminalSymbol === undefined){
+            throw "Invalid element";
+        }
         if(rule === undefined){
             rule = [];
         }
@@ -7,16 +10,19 @@ class Element {
             index = 0;
         }
         if(index <= rule.length) {
+            this.nonTerminalSymbol = nonTerminalSymbol;
             this.rule = rule;
             this.index = index;
         } else {
-            throw "Invalid element"
+            throw "Invalid element";
         }
     }
 
     equals(element){
         let equals = false;
-        if(element.index === this.index && element.rule.length === this.rule.length) {
+        if(element.nonTerminalSymbol === this.nonTerminalSymbol
+            && element.index === this.index
+            && element.rule.length === this.rule.length) {
             equals = true;
             for (let i = 0; i < this.rule.length; i++) {
                 if(this.rule[i] !== element.rule[i]){
@@ -40,11 +46,11 @@ class Element {
 }
 
 Element.prototype.toString = function elementToString() {
-    let ret;
+    let ret = this.nonTerminalSymbol + " -> ";
     if(this.index === 0){
-        ret = ". " + this.rule[0];
+        ret += ". " + this.rule[0];
     } else {
-        ret = this.rule[0];
+        ret += this.rule[0];
     }
     for (let i = 1; i < this.rule.length; i++) {
         if(i === this.index){
@@ -60,11 +66,16 @@ Element.prototype.toString = function elementToString() {
 };
 
 class Collection {
-    constructor(elements) {
+    constructor(elements, origin, symbol) {
         if(elements === undefined){
             elements = [];
         }
         this.elements = elements;
+        this.isStart = origin === undefined || symbol === undefined;
+        if(!this.isStart){
+            this.origin = origin;
+            this.symbol = symbol;
+        }
     }
 
     has(element){
@@ -87,27 +98,29 @@ class Collection {
     }
 
     equals(collection){
-        let equal = true;
+        // if(this.isStart !== collection.isStart) return false;
+        // if(!this.isStart){
+        //     if (this.origin !== collection.origin || this.symbol !== collection.symbol){
+        //         return false;
+        //     }
+        // }
         for (let i = 0; i < this.elements.length; i++) {
             if(!collection.has(this.elements[i])){
-                equal = false;
-                break;
+                return false;
             }
         }
-        if(equal){
-            for (let i = 0; i < collection.length; i++) {
-                if(!this.elements.has(collection[i])){
-                    equal = false;
-                    break;
-                }
+        for (let i = 0; i < collection.length; i++) {
+            if(!this.elements.has(collection[i])){
+                return false;
             }
         }
-        return equal;
+        return true;
     }
 }
 
 Collection.prototype.toString = function collectionToString() {
-    return "(" + this.elements.toString() + ")"
+    if(this.isStart) return "Start: " + "(" + this.elements.toString() + "); ";
+    return "(" + this.origin + ", " + this.symbol + "): " + "(" + this.elements.toString() + "); ";
 };
 
 class Collections {
@@ -158,7 +171,7 @@ function closure(collection) {
                 if (isNT(nextSymbol)) {
                     log("                               " + nextSymbol + " is nonTerminal");
                     for (let j = 0; j < productionRules[nextSymbol].length; j++) {
-                        let element = new Element(productionRules[nextSymbol][j]);
+                        let element = new Element(nextSymbol, productionRules[nextSymbol][j]);
                         log("                               Current element: " + element);
                         if (collection.append(element)) {
                             log("                               Added current element to: " + collection);
@@ -180,15 +193,15 @@ function closure(collection) {
     return collection;
 }
 
-function jump(collection, symbol){
+function jump(collection, origin, symbol){
     log("                   Calculating (" + collection + " ; " + symbol + ")-Jump");
-    let jumps = new Collection();
+    let jumps = new Collection([], origin, symbol);
     for (let i = 0; i < collection.elements.length; i++) {
         if(collection.elements[i].isNotFinished()) {
             log("                       Current collection: " + collection.elements[i]);
             if (collection.elements[i].followingSymbol() === symbol) {
                 log("                       Found symbol: " + symbol + " after \'.\' in: " + collection.elements[i]);
-                let element = new Element(collection.elements[i].rule, collection.elements[i].index + 1);
+                let element = new Element(collection.elements[i].nonTerminalSymbol, collection.elements[i].rule, collection.elements[i].index + 1);
                 if (jumps.append(element)) log("                       Added: " + element);
             }
         } else {
@@ -200,7 +213,7 @@ function jump(collection, symbol){
 
 function generateStates() {
     log("Generating States:");
-    let startingElement = new Element(STARTPRODUCTION, 0);
+    let startingElement = new Element(STARTSYMBOL, STARTPRODUCTION, 0);
     let collection = new Collection([startingElement]);
     closure(collection);
 
@@ -220,7 +233,7 @@ function generateStates() {
                 if (states.collections[i].elements[j].isNotFinished()) {
                     let nextSymbol = states.collections[i].elements[j].followingSymbol();
                     log("               Following Symbol: " + nextSymbol);
-                    let collection = jump(states.collections[i], nextSymbol);
+                    let collection = jump(states.collections[i], i, nextSymbol);
                     log("               Returned Collection: " + collection);
                         if(states.append(collection)){
                             log("               Appended Collection to states");
@@ -235,5 +248,5 @@ function generateStates() {
         }
         itr++;
     }
-    log("Final States: " + states);
+    console.log("Final States: " + states);
 }

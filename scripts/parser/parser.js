@@ -2,7 +2,6 @@ function parseGrammar() {
 
 
       //  test();
-
     hideAll();
     let input = getInput();
     terminals = input[0].sort();
@@ -26,7 +25,7 @@ function parseGrammar() {
     } catch (e) {
         document.getElementById("parse-grammar-button").style.backgroundColor = "red";
     }
-    logging = "NONE";
+    logging = "ALL";
    generateStates();
 }
 
